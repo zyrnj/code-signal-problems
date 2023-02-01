@@ -6,6 +6,14 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: 1qazwsx
+          MYSQL_DATABASE: sys
+        ports:
+            - '8888:3306'
     strategy:
       matrix:
         python-version: ["3.9"]
@@ -22,7 +30,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          mysql -h 127.0.0.1 --port 8888 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS test;'
+          mysql -h 0.0.0.0 --port 8888 -u root -ppassword -e 'CREATE DATABASE IF NOT EXISTS sys;'
       - name: test
         run: |
           pytest -q Test.py
