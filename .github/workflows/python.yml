@@ -6,6 +6,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: 1qaz2wsx
+          MYSQL_DATABASE: sys
+        ports:
+            - '8888:3306'
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
         python-version: ["3.9"]
@@ -19,6 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo /etc/init.d/mysql start
+          mysql -h 0.0.0.0 --port 8888 -u root -p1qaz2wsx -e 'CREATE DATABASE IF NOT EXISTS sys;'
           python -m pip install --upgrade pip
           pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
