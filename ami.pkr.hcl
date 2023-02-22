@@ -38,14 +38,12 @@ source "amazon-ebs" "my-ami" {
   source_ami    = "${var.source_ami}"
   ssh_username  = "${var.ssh_username}"
   subnet_id     = "${var.subnet_id}"
-  ssh_interface = "public_ip"
   vpc_id = "vpc-0139809c4462101f0"
-  ssh_timeout="30m"
   
 
   launch_block_device_mappings {
     delete_on_termination = true
-    device_name           = "/dev/sda1"
+    device_name           = "/dev/sdf"
     volume_size           = 8
     volume_type           = "gp2"
   }
